@@ -38,13 +38,22 @@ function! ag#Ag(cmd, args)
 
   let grepprg_bak=&grepprg
   let grepformat_bak=&grepformat
+  let l:t_ti_bak=&t_ti
+  let l:t_te_bak=&t_te
+  let l:shellpipe_bak=&shellpipe
   try
+    let &shellpipe="&>"
     let &grepprg=g:agprg
     let &grepformat=g:agformat
+    set t_ti=
+    set t_te=
     silent execute a:cmd . " " . escape(l:grepargs, '|')
   finally
     let &grepprg=grepprg_bak
     let &grepformat=grepformat_bak
+    let &t_ti=l:t_ti_bak
+    let &t_te=l:t_te_bak
+    let &shellpipe=l:shellpipe_bak
   endtry
 
   if a:cmd =~# '^l'
